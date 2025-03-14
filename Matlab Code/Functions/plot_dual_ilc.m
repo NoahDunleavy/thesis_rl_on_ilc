@@ -4,7 +4,7 @@ function [error_fig, out1_fig, out2_fig, dual_out_fig, input1_fig, input2_fig] =
 %Inputs:
     %figure_name: string - name of the figure that is opened, or precursor to saved image
     %graph_title: string - displayed title header on plot
-    %ILC_Trial: structure - containing iterations of coeffecients
+    %ILC_Trial: structure - containing iterations of coefficients
     %goal_output: vector - y*, what we want to generate
     %goal_input: vector - u*, what input gets us there
     %to_plot: scalar/vector - indicate which trials or how many to plot
@@ -60,7 +60,8 @@ for ndx = 1:num_trials       %convert structure to array
     error_progression(ndx) = norm(ILC_Trial(ndx).output_error)/num_outputs; %normalize the errors
 end
 error_fig = figure('Name', sprintf('%s - Error Progression', figure_name));
-plot(1:num_trials, error_progression, 'r*', 'LineStyle',':');
+semilogy(1:num_trials, error_progression, 'r*', 'LineStyle',':'); %semi log to show better convergance rate for small values
+set(gca, 'YScale', 'log'); %force log scale (sometimes linear if small range)
 title('Error Magnitude');
 subtitle(sprintf('%s', graph_title), 'FontSize', subtitle_size)
 xlabel('Trial Number')

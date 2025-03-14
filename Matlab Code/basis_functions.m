@@ -5,8 +5,8 @@
 clc; clear;
 addpath('Saved Data', 'Functions');
 setDefaultFigProp();
-plot_all = false;
-update_file_path = -1; %'C:\Users\noahd\OneDrive\Desktop\Thesis\Thesis Images\Basis Functions';  %set this to the save location if want to update figures, or -1 if not
+plot_all = true;
+update_file_path = -1;%'C:\Users\noahd\OneDrive\Desktop\Thesis\Thesis Images\Basis Functions';  %set this to the save location if want to update figures, or -1 if not
 if update_file_path ~= -1
     keyboard    %ensure we have to be very concious about ever updating all the images
 end
@@ -50,14 +50,14 @@ end
 if plot_all
     fig = figure('Name', 'Cheby Weights');
     temp_plot = plot(1:(max_cheby), cheby_weights, 'Marker', 'o', 'MarkerFaceColor', 'auto');
-    xlabel('Coeffecient Number')
+    xlabel('Coefficient Number')
     ylabel('Weight')
-    title('Chebyshev Coeffecient Weights')
+    title('Chebyshev Coefficient Weights')
     xlim([1, max_cheby])
     xticks(1:(max_cheby))
     save_figure(update_file_path, fig);
 end
-
+ 
 %% System Creation
 thesis_system = load('Saved Data\thesis_system.mat');
 A = thesis_system.A;
@@ -151,7 +151,7 @@ proj_u_star = T_u * pinv(T_u' * T_u) * T_u' * u_star;   %project u* onto Tu
 norm(proj_u_star - FIPO_ILC(end).input)
 if plot_all
     to_plot = [1, 2, 5, 20];
-    plot_ilc_coeffecients('Full Input Partial Output', 'Full Input Partial Output', FIPO_ILC, to_plot, beta_star, find(beta_star)', 5, update_file_path);
+    plot_ilc_coefficients('Full Input Partial Output', 'Full Input Partial Output', FIPO_ILC, to_plot, beta_star, find(beta_star)', 5, update_file_path);
     plot_dual_ilc('Full Input Partial Output', 'Full Input Partial Output', FIPO_ILC, y_star, u_star, to_plot, update_file_path);
 end 
 
@@ -221,13 +221,13 @@ proj_u_star = T_u * pinv(T_u' * T_u) * T_u' * u_star;   %project u* onto Tu
 norm(proj_u_star - PIFO_ILC(end).input)
 if plot_all
     to_plot = [1, 2, 5, 20]; %same to_plot
-    plot_ilc_coeffecients('Partial Input Full Output', 'Partial Input Full Output', PIFO_ILC, to_plot, -1, 5, find(alpha_star)', update_file_path);
+    plot_ilc_coefficients('Partial Input Full Output', 'Partial Input Full Output', PIFO_ILC, to_plot, -1, 5, find(alpha_star)', update_file_path);
     plot_dual_ilc('Partial Input Full Output', 'Partial Input Full Output', PIFO_ILC, y_star, u_star, to_plot, update_file_path);
 end
 
 %% Setup: ny < nu
 %Keep the same Tu and Ty
-beta_star = alpha_star; %swap back the coeffecients
+beta_star = alpha_star; %swap back the coefficients
 u_star = T_u * beta_star;
 y_star = P*u_star + d;
 T_y = y_star;   %set our output basis to be pmx1
@@ -265,13 +265,13 @@ proj_u_star = T_u * pinv(T_u' * T_u) * T_u' * u_star;   %project u* onto Tu
 norm(proj_u_star - FISO_ILC(end).input)
 if plot_all
     to_plot = [1, 2, 5, 20]; %same to_plot
-    plot_ilc_coeffecients('Full Input Single Output', 'Full Input Single Output', FISO_ILC, to_plot, beta_star, find(beta_star)', 1, update_file_path);
+    plot_ilc_coefficients('Full Input Single Output', 'Full Input Single Output', FISO_ILC, to_plot, beta_star, find(beta_star)', 1, update_file_path);
     plot_dual_ilc('Full Input Single Output', 'Full Input Single Output', FISO_ILC, y_star, u_star, to_plot, update_file_path);
 end
 
 %% Setup: ny > nu
 T_y = T_u; %set the basis spaces back to both be chebys
-alpha_star = beta_star; %swap back the coeffecients
+alpha_star = beta_star; %swap back the coefficients
 y_star = T_y * alpha_star;
 u_star = pinv(P) * (y_star - d);
 T_u = u_star;   %set our output basis to be pmx1
@@ -307,7 +307,7 @@ proj_u_star = T_u * pinv(T_u' * T_u) * T_u' * u_star;   %project u* onto Tu
 norm(proj_u_star - SIFO(end).input)
 if plot_all
     to_plot = [1, 2, 5, 20]; %same to_plot
-    plot_ilc_coeffecients('Single Input Full Output', 'Single Input Full Output', SIFO, to_plot, 1, 1, find(alpha_star)', update_file_path);
+    plot_ilc_coefficients('Single Input Full Output', 'Single Input Full Output', SIFO, to_plot, 1, 1, find(alpha_star)', update_file_path);
     plot_dual_ilc('Single Input Full Output', 'Single Input Full Output', SIFO, y_star, u_star, to_plot, update_file_path);
 end
 
@@ -360,7 +360,7 @@ input_error = norm(T_u(:, 1) - u_star)
 
 if plot_all
     to_plot = 4; 
-    plot_ilc_coeffecients('Rolling Input Basis', 'Rolling Input Basis', rolling_ILC, to_plot, -1, num_rolling_basis_input + 1, num_rolling_basis_input + 1, update_file_path);
+    plot_ilc_coefficients('Rolling Input Basis', 'Rolling Input Basis', rolling_ILC, to_plot, -1, num_rolling_basis_input + 1, num_rolling_basis_input + 1, update_file_path);
     plot_dual_ilc('Rolling Input Basis', 'Rolling Input Basis', rolling_ILC, y_star, u_star, to_plot, update_file_path);
 end
 

@@ -185,10 +185,11 @@ policy = F([1, 2, 19, 20])
 
 num_sim = 100;
 y_star_Trial = basis_ilc_sim(P, d, C*x0, Episode(end).Phi, output_basis_functions, y_star, num_sim, F); 
-%y_star_lqr_Trial = basis_ilc_sim(P, d, C*x0, Episode(end).Phi, output_basis_functions, y_star, num_sim, F_lqr_y_star); 
+F_lqr_y_star_mod = discounted_LQR(eye(num_output_basis), -pinv(output_basis_functions) * P * Episode(end).Phi, gamma, Q, R_y_star*(1e-8));
+y_star_lqr_Trial = basis_ilc_sim(P, d, C*x0, Episode(end).Phi, output_basis_functions, y_star, num_sim, F_lqr_y_star_mod); 
 if plot_all
-    %plot_dual_ilc('Controller Application of Conjugate Input Basis with y star Output Basis', 'Fixed y* Output Basis RL', y_star_Trial, y_star, -1, 4, update_file_path);
-    plot_dual_ilc('LQR Controller Application of Conjugate Input Basis with y star Output Basis', 'Fixed y* Output Basis LQR', y_star_Trial, y_star, -1, 4, update_file_path);
+    plot_dual_ilc('Controller Application of Conjugate Input Basis with y star Output Basis', 'Fixed y* Output Basis RL', y_star_Trial, y_star, -1, 4, update_file_path);
+    plot_dual_ilc('LQR Controller Application of Conjugate Input Basis with y star Output Basis', 'Fixed y* Output Basis LQR', y_star_lqr_Trial, y_star, -1, 4, update_file_path);
 end
 
 %% Fixed Resolution T_y = Phi^b
@@ -225,9 +226,9 @@ policy = F([1, 2, 19, 20], [1, 2, 19, 20])
 
 %Plot the path
 if plot_all
-    plot_dual_ilc('Scaled Conjugate Basis', 'Scaled Conjugate Basis', fixed_Phi_b_Trials, y_star, -1, 4, update_file_path);
+    plot_dual_ilc('c Conjugate Basis', 'Scaled Conjugate Basis', fixed_Phi_b_Trials, y_star, -1, 4, update_file_path);
 
-    final_conj_Trial = basis_ilc_sim(P, d, C*x0, conjugate_basis_functions, output_basis_functions, y_star, 100, F); 
+    F
     plot_dual_ilc('Scaled Conjugate Basis Application', 'Scaled Conjugate Basis Application', final_conj_Trial, y_star, -1, 4, update_file_path);
 end
 
@@ -239,7 +240,7 @@ if any(mags > 1)
     sprintf('Unstable')
     mags(mags > 1)
 end
-return
+
 %% Growing Resolution T_y = Phi^b
 growing_phi_R = 1 * eye(num_ilc_inputs);
 Q = 100 * eye(num_ilc_states); %potential for full range

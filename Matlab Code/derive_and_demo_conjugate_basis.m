@@ -5,7 +5,7 @@ clc; clear;
 addpath('Saved Data', 'Functions');
 setDefaultFigProp();
 plot_all = true;
-update_file_path = 'C:\Users\noahd\OneDrive\Desktop\Thesis\Thesis Images\Derive and Demo Conjugate Basis';  %set this to the save location if want to update figures, or -1 if not
+update_file_path = -1;%'C:\Users\noahd\OneDrive\Desktop\Thesis\Thesis Images\Derive and Demo Conjugate Basis';  %set this to the save location if want to update figures, or -1 if not
 if update_file_path ~= -1
     keyboard    %ensure we have to be very concious about ever updating all the images
 end
@@ -199,7 +199,7 @@ if plot_all
     axis equal
     save_figure(update_file_path, fig);
 end
-
+return
 %% Arbitrary Shape
 p = 200;
 loadedShape = load('Saved Data\heart_p200.mat');    %read in the file
