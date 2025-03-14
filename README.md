@@ -4,7 +4,7 @@ Constructing a controller which brings about this reduction in error is difficul
 
 When a system is translated into its ILC format, the number of effective states and inputs is scaled up by the number of steps in the manufacturing process. This exponentially increases the number of trials that would need to be run to produce a controller through RL. It is then desirable to reverse this increase in dimensions.
 
-To accomplish this, we employ basis functions on the the system input and outputs. We find that the number of basis functions describing the input must be less than or equal to the number describing the output, and the input necessary to produce our desired output must be in the space of the input basis functions -- this requirement is not true for the output.
+To accomplish this, we employ basis functions on the system input and outputs. We find that the number of basis functions describing the input must be less than or equal to the number describing the output, and the input necessary to produce our desired output must be in the space of the input basis functions -- this requirement is not true for the output.
 
 As we cannot know from the beginning what our goal input is, we must be able to dynamically grow our basis space representation in an efficient manner. To do so, we derive conjugate basis functions that are defined for a specific system.
 
